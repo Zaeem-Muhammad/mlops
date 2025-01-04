@@ -18,17 +18,26 @@ jobs:
         with:
           python-version: "3.8"
 
-      - name: Installing dependencies
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
           pip install huggingface_hub
 
       - name: Log in to Hugging Face
-        run: huggingface-cli login --token ${{ secrets.HF_TOKEN }}
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          huggingface-cli login --token $HF_TOKEN
 
       - name: Deploy to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git clone https://github.com/Zaeem-Muhammad/mlopsA4.git
-          cd mlopsA4
-          git remote add hf https://huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4
-          git push hf main
+          git clone https://huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4.git
+          cd Mlops-Assignment4
+          git remote add origin https://huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4.git
+          git config --global user.email "muhammadzaeem1026@gmail.com"
+          git config --global user.name "Zaeem-Muhammad"
+          git add .
+          git commit -m "Deploy updated code"
+          git push origin main
