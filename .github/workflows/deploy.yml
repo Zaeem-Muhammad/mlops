@@ -3,31 +3,43 @@ name: Deploy ML Model to Azure VM
 on:
   push:
     branches:
-      - main  # Trigger when code is pushed to the main branch
+      - main  # Trigger the deployment when changes are pushed to the main branch
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Run the deployment on the latest Ubuntu environment
 
     steps:
-      # Step 1: Checkout the code from the repository
+      # Step 1: Checkout code from GitHub repository
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          repository: Zaeem-Muhammad/mlops  # Fetch from the correct repository
 
       # Step 2: Set up SSH to Azure VM
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}  # GitHub secret for private SSH key
+          ssh-private-key: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}  # GitHub secret for the private SSH key
 
-      # Step 3: Deploy to the Azure VM
+      # Step 3: Deploy to Azure VM
       - name: Deploy model to Azure VM
         run: |
           ssh -o StrictHostKeyChecking=no zaeem@20.197.16.231 "
-            # Navigate to your repo on Azure VM
-            cd /home/zaeem/mlopsA4
-            # Pull the latest changes from GitHub
-            git pull origin main
-            # (Optional) Restart your Flask app or the service
+            # Navigate to the directory where the repo will be cloned
+            cd /home/zaeem
+            # Clone the repo if not already cloned, or pull the latest changes if already cloned
+            if [ ! -d 'mlops' ]; then
+              git clone https://github.com/Zaeem-Muhammad/mlops.git  # Cloning the correct repository
+            else
+              cd mlops
+              git pull origin main  # Pull the latest changes
+            fi
+            # Set up virtual environment and install dependencies
+            cd mlops
+            python3 -m venv venv  # Create virtual environment if not exists
+            source venv/bin/activate  # Activate the virtual environment
+            pip install -r requirements.txt  # Install dependencies
+            # Restart the Flask app service
             sudo systemctl restart flask_app.service
           "
