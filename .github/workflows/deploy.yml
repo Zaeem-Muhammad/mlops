@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: "3.8"
 
       - name: Install dependencies
         run: |
@@ -31,5 +31,5 @@ jobs:
         run: |
           git clone https://github.com/Zaeem-Muhammad/mlopsA4.git
           cd mlopsA4
-          huggingface-cli repo create muhammadzaeem/Mlops-Assignment4 --type space
+          huggingface-cli repo create muhammadzaeem/Mlops-Assignment4 --type space --yes
           git push https://huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4.git
