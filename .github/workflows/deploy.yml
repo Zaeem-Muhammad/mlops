@@ -1,0 +1,35 @@
+# .github/workflows/deploy.yml
+name: CI/CD for Hugging Face Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install huggingface_hub
+
+      - name: Log in to Hugging Face
+        run: huggingface-cli login --token ${{ secrets.HF_TOKEN }}
+
+      - name: Deploy to Hugging Face
+        run: |
+          git clone https://github.com/Zaeem-Muhammad/mlopsA4.git
+          cd mlopsA4
+          huggingface-cli repo create muhammadzaeem/Mlops-Assignment4 --type space
+          git push https://huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4.git
