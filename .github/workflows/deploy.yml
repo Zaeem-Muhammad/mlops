@@ -15,7 +15,7 @@ jobs:
         with:
           repository: Zaeem-Muhammad/mlops
 
-      - name: Set up SSH
+      - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}
@@ -23,18 +23,34 @@ jobs:
       - name: Deploy model to Azure VM
         run: |
           ssh -o StrictHostKeyChecking=no zaeem@20.197.16.231 "
+            # Navigate to the home directory
             cd /home/zaeem
+
+            # Clone or pull the latest changes from the repository
             if [ ! -d 'mlops' ]; then
               git clone https://github.com/Zaeem-Muhammad/mlops.git
             else
               cd mlops
               git pull origin main
             fi
-            sudo apt-get update
-            sudo apt-get install python3.12-venv python3-pip  # Install the correct packages
+
+            # Install required system packages
+            sudo apt-get update -y
+            sudo apt-get install -y python3.12-venv python3-pip git build-essential
+
+            # Navigate to the mlops directory and set up the virtual environment
             cd mlops
             python3 -m venv venv
+
+            # Activate virtual environment and install requirements
             source venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
-            sudo systemctl restart flask_app.service
+
+            # (Optional) Restart Flask application service if running as a service
+            if systemctl list-units --full -name flask_app.service; then
+              sudo systemctl restart flask_app.service
+            else
+              echo 'Flask service not found, skipping restart.'
+            fi
           "
