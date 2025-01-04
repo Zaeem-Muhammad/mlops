@@ -28,9 +28,14 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: huggingface-cli login --token $HF_TOKEN
 
+      - name: Configure Git user
+        run: |
+          git config --global user.name "Zaeem-Muhammad"
+          git config --global user.email "muhammadzaeem1026@gmail.com"
+
       - name: Push to Hugging Face Space
         run: |
           git lfs install
           git add .
           git commit -m "Update model"
-          git push https://huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4
+          git push https://huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4.git
