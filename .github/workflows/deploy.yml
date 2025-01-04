@@ -30,7 +30,8 @@ jobs:
               cd mlops
               git pull origin main
             fi
-            sudo apt-get install python3-venv
+            sudo apt-get update
+            sudo apt-get install python3.12-venv python3-pip  # Install the correct packages
             cd mlops
             python3 -m venv venv
             source venv/bin/activate
