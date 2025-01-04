@@ -1,4 +1,4 @@
-name: Deploy ML Model to Azure VM
+name: Deploy ML Model to Azure Machine
 
 on:
   push:
