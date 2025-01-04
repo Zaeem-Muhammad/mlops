@@ -1,20 +1,33 @@
-name: Sync to Hugging Face hub
+name: Deploy ML Model to Azure VM
 
 on:
   push:
-    branches: [main]
-
-  # to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches:
+      - main  # Trigger when code is pushed to the main branch
 
 jobs:
-  sync-to-hub:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      # Step 1: Checkout the code from the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up SSH to Azure VM
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          fetch-depth: 0
-      - name: Push to hub
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push --force https://muhammadzaeem:$HF_TOKEN@huggingface.co/spaces/muhammadzaeem/Mlops-Assignment4 main
+          ssh-private-key: ${{ secrets.AZURE_SSH_PRIVATE_KEY }}  # GitHub secret for private SSH key
+
+      # Step 3: Deploy to the Azure VM
+      - name: Deploy model to Azure VM
+        run: |
+          ssh -o StrictHostKeyChecking=no zaeem@20.197.16.231 "
+            # Navigate to your repo on Azure VM
+            cd /home/zaeem/mlopsA4
+            # Pull the latest changes from GitHub
+            git pull origin main
+            # (Optional) Restart your Flask app or the service
+            sudo systemctl restart flask_app.service
+          "
