@@ -7,23 +7,7 @@ Includes secure user authentication, admin-protected endpoints, and complete Swa
 
 
 ## 📁 Project Structure
-
-project/
-│
-├── app/
-│ ├── auth.py # Auth logic (JWT, hash, current user)
-│ ├── database.py # Database connection
-│ ├── main.py # App entrypoint
-│ ├── models.py # SQLAlchemy models
-│ ├── schemas.py # Pydantic models
-│ └── routes/
-│ ├── users.py
-│ ├── categories.py
-│ └── products.py
-│
-├── requirements.txt
-├── .env
-└── README.md
+<pre> ``` project/ │ ├── app/ │ ├── auth.py # Auth logic (JWT, hash, current user) │ ├── database.py # Database connection │ ├── main.py # App entrypoint │ ├── models.py # SQLAlchemy models │ ├── schemas.py # Pydantic models │ └── routes/ │ ├── users.py │ ├── categories.py │ └── products.py │ ├── requirements.txt ├── .env └── README.md ``` </pre>
 
 
 ## ⚙️ Setup Instructions
