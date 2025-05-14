@@ -1,15 +1,12 @@
-Here is the full content you can copy and paste into your `README.md` file:
 
-```markdown
 # 🚀 Product Catalog API
 
 A modern, asynchronous **Product Catalog API** built with **FastAPI**, **PostgreSQL**, and **JWT authentication**.  
 Includes secure user authentication, admin-protected endpoints, and complete Swagger API documentation.
 
----
+
 
 ## 📁 Project Structure
-```
 
 project/
 │
@@ -28,9 +25,6 @@ project/
 ├── .env
 └── README.md
 
-````
-
----
 
 ## ⚙️ Setup Instructions
 
